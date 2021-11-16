@@ -1,0 +1,32 @@
+CREATE PACKAGE error_handling AS
+    gc_custom_error_identifier CONSTANT VARCHAR2(100) := 'CUSTOM_ERROR';
+    gc_log_text CONSTANT VARCHAR2(500) := 'User %s encountered "%s" at Component "%s"';
+    gc_unexpected_error_log_text CONSTANT VARCHAR2(500) := 'User %s encountered unexpected Error "%s" at Component "%s"';
+    
+    TYPE g_error_message_rec IS RECORD (message_identifier error_lookup.error_message%TYPE,
+                                      log_level error_lookup.log_level%TYPE);
+    FUNCTION handle_apex_error(
+        p_error IN apex_error.t_error) RETURN apex_error.t_error_result;
+    FUNCTION most_relevant_error_message(
+                                            error_code_in NUMBER,
+                                            app_id_in     NUMBER,
+                                            page_id_in    NUMBER) RETURN g_error_message_rec;
+        
+    PROCEDURE add_error(
+                           message_in VARCHAR2,
+                           additional_info_in VARCHAR2 DEFAULT NULL,
+                           display_location_in VARCHAR2 DEFAULT apex_error.c_inline_in_notification);
+        
+    FUNCTION get_message_text(message_identifier_in VARCHAR2,
+                              language_in VARCHAR2 DEFAULT NULL) RETURN VARCHAR2;
+        
+    FUNCTION get_log_text(user_in           VARCHAR2,
+                          error_text_in     VARCHAR2,
+                          component_name_in VARCHAR2) RETURN VARCHAR2;
+        
+    FUNCTION get_unexpected_error_log_text(user_in VARCHAR2,
+                                          error_text_in VARCHAR2,
+                                          component_name_in VARCHAR2) RETURN VARCHAR2;
+END error_handling;
+/
+
