@@ -4,7 +4,14 @@ This repository contains a package for easy and robust error handling in Oracle 
 An unexpected error occured. Please contact the support team and provide the following ID: %0
 ```
 
+
+
+## Installation
+To properly install and use the error handling you have to run the script `install.sql`. This will install all necessary components in the current schema. Additionally, you have to install the `error_handling_application.sql` in an APEX workspace using said schema. Afterwards, you will have to adjust the variable `gc_message_handling_application` in `error_handling` to the ID of the error handling application.
+
 If you want to use the error handling function for an application you need to open `Shared Components > Application Definition Attributes > Error Handling` and paste in `error_handling.handle_apex_error` as error handling function.
 
+The application already comes with some predefined error messages to help you hit the ground running.
+
 ## TO DO:
-In the future, I will also publish a modified version of the Logger-framework that includes all necessary modifications and provide an error message management app that makes all these functionalities more accessible. But currently I'm terribly busy...
+The modified version of Logger (apps_logger) is just included as a single script. This may change in future iterations.
